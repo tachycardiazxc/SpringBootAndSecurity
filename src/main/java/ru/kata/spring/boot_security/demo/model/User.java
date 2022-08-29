@@ -119,4 +119,8 @@ public class User implements UserDetails {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
+    }
 }

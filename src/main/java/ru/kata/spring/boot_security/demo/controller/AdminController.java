@@ -4,25 +4,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
 
-    private final UserService service;
+    private UserService userService;
+    private RoleService roleService;
 
     @Autowired
-    public AdminController(UserService service) {
-        this.service = service;
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    @Autowired
+    public void setRoleService(RoleService roleService) {
+        this.roleService = roleService;
     }
 
     @GetMapping
     public String getUsers(Model model) {
-        List<User> users = service.getAllUsers();
+        List<User> users = userService.getAllUsers();
         model.addAttribute("users", users);
         return "admin";
     }
@@ -30,30 +41,33 @@ public class AdminController {
     @GetMapping("/create")
     public String createUser(Model model) {
         model.addAttribute("user", new User());
+        model.addAttribute("existing_roles", roleService.getAllRoles());
         return "admin_create";
     }
 
     @PostMapping("/create")
     public String create(@ModelAttribute("user") User user) {
-        service.save(user);
+        userService.save(user);
         return "redirect:/admin";
     }
 
     @GetMapping("/edit/{id}")
     public String edit(Model model, @PathVariable("id") int id) {
-        model.addAttribute("user", service.getUserById(id));
+        model.addAttribute("user", userService.getUserById(id));
+        model.addAttribute("existing_roles", roleService.getAllRoles());
         return "edit";
     }
 
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("user") User user) {
-        service.save(user);
+        userService.save(user);
+        userService.getUserById(user.getId()).setRoles(user.getRoles());
         return "redirect:/admin";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
-        service.deleteUserById(id);
+        userService.deleteUserById(id);
         return "redirect:/admin";
     }
 

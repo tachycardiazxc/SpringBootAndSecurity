@@ -4,6 +4,11 @@
     <title>User page</title>
 </head>
 <body>
+<p>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Logout"/>
+</form>
+</p>
 <table>
     <tr>
         <td>Username: </td>
@@ -20,6 +25,10 @@
     <tr>
         <td>Email: </td>
         <td th:text="${user.getEmail()}">Email</td>
+    </tr>
+    <tr>
+        <td>Roles: </td>
+        <td th:each="role: ${user.getRoles()}" th:text="${role}">Roles</td>
     </tr>
 </table>
 

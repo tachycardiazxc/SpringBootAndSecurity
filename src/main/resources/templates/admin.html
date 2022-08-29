@@ -6,6 +6,11 @@
 </head>
 <body>
 <h1 th:href="@{/admin/create}">Create user</h1>
+<p>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Logout"/>
+</form>
+</p>
 <table>
     <tr>
         <th>Id</th>
@@ -14,6 +19,7 @@
         <th>First name</th>
         <th>Last name</th>
         <th>Email</th>
+        <th>Role</th>
     </tr>
     <div th:each="user : ${users}">
         <tr>
@@ -23,8 +29,9 @@
             <th th:text="${user.getFirstName()}">FirstName</th>
             <th th:text="${user.getLastName()}">LastName</th>
             <th th:text="${user.getEmail()}" colspan="2">Email</th>
-<!--            <th th:text="${#strings.listJoin(user.getRoles(), ',')}">-->
-<!--            </th>-->
+            <div th:each="role: ${user.getRoles()}">
+                <th th:text="${role}">Role</th>
+            </div>
             <th><a th:href="@{/admin/edit/{id}(id=${user.getId()})}">Edit</a></th>
             <th>
                 <form th:method="DELETE" th:action="@{/admin/{id}(id=${user.getId()})}"><input type="submit" value="Delete"/></form>
