@@ -46,123 +46,135 @@
             <div class="mt-3">
                 <div class="tab-content container-fluid" id="nav-tabContent">
                     <div class="tab-pane fade" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                        <h3>All users</h3>
-                        <table class="table table-hover table-striped">
-                            <thead>
-                            <tr>
-                                <th scope="col">Id</th>
-                                <th scope="col">Username</th>
-                                <th scope="col">Password</th>
-                                <th scope="col">First name</th>
-                                <th scope="col">Last name</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Role</th>
-                                <th scope="col">Edit</th>
-                                <th scope="col">Delete</th>
-                            </tr>
-                            </thead>
-                            <tbody th:each="user : ${users}">
-                            <tr>
-                                <td th:text="${user.getId()}">Id</td>
-                                <td th:text="${user.getUsername()}">Username</td>
-                                <td th:text="${user.getPassword()}">Password</td>
-                                <td th:text="${user.getFirstName()}">FirstName</td>
-                                <td th:text="${user.getLastName()}">LastName</td>
-                                <td th:text="${user.getEmail()}">Email</td>
-                                <td th:each="role: ${user.getRoles()}" th:text="${role}">Role</td>
-                                <td><a th:href="@{/admin/edit/{id}(id=${user.getId()})}" role="button"
-                                       class="btn btn-info">Edit</a></td>
-                                <td>
-                                    <form th:method="DELETE" th:action="@{/admin/{id}(id=${user.getId()})}">
-                                        <input class="btn btn-danger"
-                                               type="submit"
-                                               value="Delete"/>
-                                    </form>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                        <div>
+                            <div>
+                                <h3>All users</h3>
+                            </div>
+                            <div>
+                                <table class="table table-hover table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Id</th>
+                                        <th scope="col">Username</th>
+                                        <th scope="col">Password</th>
+                                        <th scope="col">First name</th>
+                                        <th scope="col">Last name</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Role</th>
+                                        <th scope="col">Edit</th>
+                                        <th scope="col">Delete</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody th:each="user : ${users}">
+                                    <tr>
+                                        <td th:text="${user.getId()}">Id</td>
+                                        <td th:text="${user.getUsername()}">Username</td>
+                                        <td th:text="${user.getPassword()}">Password</td>
+                                        <td th:text="${user.getFirstName()}">FirstName</td>
+                                        <td th:text="${user.getLastName()}">LastName</td>
+                                        <td th:text="${user.getEmail()}">Email</td>
+                                        <td th:each="role: ${user.getRoles()}" th:text="${role}">Role</td>
+                                        <td><a th:href="@{/admin/edit/{id}(id=${user.getId()})}" role="button"
+                                               class="btn btn-info">Edit</a></td>
+                                        <td>
+                                            <form th:method="DELETE" th:action="@{/admin/{id}(id=${user.getId()})}">
+                                                <input class="btn btn-danger"
+                                                       type="submit"
+                                                       value="Delete"/>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                        <h3>Add new user</h3>
-<!--                        <form th:method="POST" th:action="@{/admin/create}" th:object="${user}">-->
-<!--                            <div class="form-row">-->
-<!--                                <div class="col-sm-10">-->
-<!--                                    <label for="userName">Enter username</label>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="form-row">-->
-<!--                                <div class="col-sm-10">-->
-<!--                                    <input type="text" th:field="*{username}" id="userName"/>-->
-<!--                                </div>-->
-<!--                            </div>-->
+                        <div>
+                            <div>
+                                <h3>Add new user</h3>
+                            </div>
+                            <div class="row justify-content-center">
+                                <form th:method="POST" th:action="@{/admin/create}" th:object="${user}">
+                                    <div class="form-row">
+                                        <div class="col-sm-12 center">
+                                            <label for="userName">Enter username</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-sm-10">
+                                            <input type="text" th:field="*{username}" id="userName"/>
+                                        </div>
+                                    </div>
 
-<!--                            <div class="form-row">-->
-<!--                                <div class="col-sm-10">-->
-<!--                                    <label for="password">Enter password</label>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="form-row">-->
-<!--                                <div class="col-sm-10">-->
-<!--                                    <input type="text" th:field="*{password}" id="password"/>-->
-<!--                                </div>-->
-<!--                            </div>-->
+                                    <div class="form-row">
+                                        <div class="col-sm-10">
+                                            <label for="password">Enter password</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-sm-10">
+                                            <input type="text" th:field="*{password}" id="password"/>
+                                        </div>
+                                    </div>
 
-<!--                            <div class="form-row">-->
-<!--                                <div class="col-sm-10">-->
-<!--                                    <label for="firstName">Enter first name</label>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="form-row">-->
-<!--                                <div class="col-sm-10">-->
-<!--                                    <input type="text" th:field="*{firstName}" id="firstName"/>-->
-<!--                                </div>-->
-<!--                            </div>-->
+                                    <div class="form-row">
+                                        <div class="col-sm-10">
+                                            <label for="firstName">Enter first name</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-sm-10">
+                                            <input type="text" th:field="*{firstName}" id="firstName"/>
+                                        </div>
+                                    </div>
 
-<!--                            <div class="form-row">-->
-<!--                                <div class="col-sm-10">-->
-<!--                                    <label for="lastName">Enter last name</label>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="form-row">-->
-<!--                                <div class="col-sm-10">-->
-<!--                                    <input type="text" th:field="*{lastName}" id="lastName"/>-->
-<!--                                </div>-->
-<!--                            </div>-->
+                                    <div class="form-row">
+                                        <div class="col-sm-10">
+                                            <label for="lastName">Enter last name</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-sm-10">
+                                            <input type="text" th:field="*{lastName}" id="lastName"/>
+                                        </div>
+                                    </div>
 
-<!--                            <div class="form-row">-->
-<!--                                <div class="col-sm-10">-->
-<!--                                    <label for="email">Enter email</label>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="form-row">-->
-<!--                                <div class="col-sm-10">-->
-<!--                                    <input type="text" th:field="*{email}" id="email"/>-->
-<!--                                </div>-->
-<!--                            </div>-->
+                                    <div class="form-row">
+                                        <div class="col-sm-10">
+                                            <label for="email">Enter email</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-sm-10">
+                                            <input type="text" th:field="*{email}" id="email"/>
+                                        </div>
+                                    </div>
 
-<!--                            <div class="form-row">-->
-<!--                                <div class="col-sm-10">-->
-<!--                                    <label for="roles">Select roles</label>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="form-row">-->
-<!--                                <div class="col-sm-10">-->
-<!--                                    <select th:field="*{roles}" id="roles" multiple>-->
-<!--                                        <option th:each="role: ${existing_roles}" th:value="${role.id}"-->
-<!--                                                th:text="${role.name}">Role-->
-<!--                                        </option>-->
-<!--                                    </select>-->
-<!--                                </div>-->
-<!--                            </div>-->
+                                    <div class="form-row">
+                                        <div class="col-sm-10">
+                                            <label for="roles">Select roles</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-sm-10">
+                                            <select th:field="*{roles}" id="roles" multiple class="custom-select">
+                                                <option th:each="role: ${existing_roles}" th:value="${role.id}"
+                                                        th:text="${role.name}">Role
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
 
-<!--                            <div class="form-row">-->
-<!--                                <div class="col-sm-10">-->
-<!--                                    <input type="submit" value="submit">-->
-<!--                                </div>-->
-<!--                            </div>-->
+                                    <div class="form-row">
+                                        <div class="col-sm-10">
+                                            <input type="submit" value="submit">
+                                        </div>
+                                    </div>
 
-<!--                        </form>-->
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
