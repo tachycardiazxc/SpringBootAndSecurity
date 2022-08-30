@@ -48,13 +48,13 @@ public class UserDetailsService implements org.springframework.security.core.use
     @Override
     @Transactional
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public void deleteUserById(int id) {
+    public void deleteUserById(long id) {
         userRepository.deleteById(id);
     }
 
     @Override
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public User getUserById(int id) {
+    public User getUserById(long id) {
         Optional<User> user = userRepository.findById(id);
         return user.orElse(null);
     }

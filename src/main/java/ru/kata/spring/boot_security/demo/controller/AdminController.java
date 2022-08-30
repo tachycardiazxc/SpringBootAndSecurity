@@ -47,7 +47,7 @@ public class AdminController {
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(Model model, @PathVariable("id") int id) {
+    public String edit(Model model, @PathVariable("id") long id) {
         model.addAttribute("user", userService.getUserById(id));
         model.addAttribute("existing_roles", roleService.getAllRoles());
         return "edit";
@@ -56,12 +56,11 @@ public class AdminController {
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("user") User user) {
         userService.save(user);
-        userService.getUserById(user.getId()).setRoles(user.getRoles());
         return "redirect:/admin";
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") int id) {
+    public String delete(@PathVariable("id") long id) {
         userService.deleteUserById(id);
         return "redirect:/admin";
     }
