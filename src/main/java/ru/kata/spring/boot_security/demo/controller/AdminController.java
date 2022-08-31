@@ -1,40 +1,38 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.dto.UserDTO;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-@Controller
+@RestController
 @RequestMapping("/admin")
 public class AdminController {
 
-    private UserService userService;
-    private RoleService roleService;
-    private PasswordEncoder passwordEncoder;
+    private final UserService userService;
+    private final RoleService roleService;
+    private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
-
-    @Autowired
-    public void setUserService(UserService userService) {
+    public AdminController(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
         this.userService = userService;
-    }
-
-    @Autowired
-    public void setRoleService(RoleService roleService) {
         this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
+        this.modelMapper = modelMapper;
     }
 
     @GetMapping
@@ -53,24 +51,37 @@ public class AdminController {
         return "admin_test";
     }
 
-    @PostMapping("/create")
-    public String create(@ModelAttribute("user") User user) {
+    @GetMapping
+    public List<UserDTO> getAllUsers() {
+        return userService.getAllUsers().stream().map(this::convertToUserDTO).collect(Collectors.toList());
+    }
+
+    @PostMapping()
+    public ResponseEntity<HttpStatus> create(@RequestBody UserDTO user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userService.save(user);
-        return "redirect:/admin";
+        userService.save(convertToUser(user));
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("user") User user) {
+    public ResponseEntity<HttpStatus> update(@RequestBody UserDTO user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userService.save(user);
-        return "redirect:/admin";
+        userService.save(convertToUser(user));
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") long id) {
+    public ResponseEntity<HttpStatus> delete(@PathVariable("id") long id) {
         userService.deleteUserById(id);
-        return "redirect:/admin";
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    private User convertToUser(UserDTO userDTO) {
+        return modelMapper.map(userDTO, User.class);
+    }
+
+    private UserDTO convertToUserDTO(User user) {
+        return modelMapper.map(user, UserDTO.class);
     }
 
 }
