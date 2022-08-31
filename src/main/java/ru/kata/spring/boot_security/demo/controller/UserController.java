@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,6 +14,7 @@ import java.util.Set;
 
 @Controller
 @RequestMapping("/user")
+@PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
 public class UserController {
 
     @GetMapping

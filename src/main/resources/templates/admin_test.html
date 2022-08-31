@@ -42,7 +42,8 @@
             <a th:if="${currentUserAuthorities.contains('ROLE_ADMIN')}" type="button"
                class="btn bg-primary btn-block disabled text-white"
                style="opacity: 100; border-radius: 0; text-align: start">Admin</a>
-            <a th:href="@{/user}" th:if="${currentUserAuthorities.contains('ROLE_USER') || currentUserAuthorities.contains('ROLE_ADMIN')}"
+            <a th:href="@{/user}"
+               th:if="${currentUserAuthorities.contains('ROLE_USER') || currentUserAuthorities.contains('ROLE_ADMIN')}"
                type="button" class="btn bg-light btn-block text-primary"
                style="margin-top: 0; text-align: start">User</a>
         </div>
@@ -217,45 +218,46 @@
                             <div class="form-group text-center disabled">
                                 <label for="formIdModalDelete"><strong>Id</strong></label>
                                 <input type="text" class="form-control" id="formIdModalDelete"
-                                       placeholder="Enter id" readonly>
+                                       placeholder="Enter id" readonly th:value="${user.id}">
                             </div>
 
                             <div class="form-group text-center">
                                 <label for="formUsernameModalDelete"><strong>Username</strong></label>
                                 <input type="text" class="form-control" id="formUsernameModalDelete"
-                                       placeholder="Enter username" readonly>
+                                       placeholder="Enter username" readonly th:value="${user.username}">
                             </div>
 
                             <div class="form-group text-center">
                                 <label for="formPasswordModalDelete"><strong>Password</strong></label>
                                 <input type="text" class="form-control" id="formPasswordModalDelete"
-                                       placeholder="Enter password" readonly>
+                                       placeholder="Enter password" readonly value="********">
                             </div>
 
                             <div class="form-group text-center">
                                 <label for="formFirstNameModalDelete"><strong>First name</strong></label>
                                 <input type="text" class="form-control" id="formFirstNameModalDelete"
-                                       placeholder="Enter first name" readonly>
+                                       placeholder="Enter first name" readonly th:value="${user.firstName}">
                             </div>
 
                             <div class="form-group text-center">
                                 <label for="formLastNameModalDelete"><strong>Last name</strong></label>
                                 <input type="text" class="form-control" id="formLastNameModalDelete"
-                                       placeholder="Enter last name" readonly>
+                                       placeholder="Enter last name" readonly th:value="${user.lastName}">
                             </div>
 
                             <div class="form-group text-center">
                                 <label for="formEmailModalDelete"><strong>Email</strong></label>
                                 <input type="text" class="form-control" id="formEmailModalDelete"
-                                       placeholder="Enter email" readonly>
+                                       placeholder="Enter email" readonly th:value="${user.email}">
                             </div>
 
                             <div class="form-group text-center">
                                 <label for="formRolesModalDelete"><strong>Role</strong></label>
                                 <select id="formRolesModalDelete" class="custom-select" style="height: 60px" multiple
                                         disabled>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
+                                    <option th:each="role: ${user.roles}" th:value="${role.id}"
+                                            th:text="${role.name}">Role
+                                    </option>
                                 </select>
                             </div>
                             <input type="submit" hidden>
