@@ -2,12 +2,12 @@ package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
@@ -43,23 +43,15 @@ public class AdminController {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) auth.getPrincipal();
-
-        Set<Role> roles = user.getRoles();
-        List<Role> existingRoles = roleService.getAllRoles();
+        Set<String> currentUserRoles = AuthorityUtils.authorityListToSet(auth.getAuthorities());
 
         model.addAttribute("currentUser", user);
+        model.addAttribute("currentUserAuthorities", currentUserRoles);
         model.addAttribute("users", users);
         model.addAttribute("newUser", new User());
         model.addAttribute("existingRoles", roleService.getAllRoles());
         return "admin_test";
     }
-
-//    @GetMapping("/create")
-//    public String createUser(Model model) {
-//        model.addAttribute("user", new User());
-//        model.addAttribute("existing_roles", roleService.getAllRoles());
-//        return "admin_create";
-//    }
 
     @PostMapping("/create")
     public String create(@ModelAttribute("user") User user) {
@@ -68,15 +60,9 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-//    @GetMapping("/edit/{id}")
-//    public String edit(Model model, @PathVariable("id") long id) {
-//        model.addAttribute("user", userService.getUserById(id));
-//        model.addAttribute("existing_roles", roleService.getAllRoles());
-//        return "edit";
-//    }
-
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("user") User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.save(user);
         return "redirect:/admin";
     }
