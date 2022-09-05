@@ -3,7 +3,6 @@ package ru.kata.spring.boot_security.demo.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -44,7 +43,6 @@ public class UserDetailServiceImp implements org.springframework.security.core.u
 
     @Override
     @Transactional
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void save(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
@@ -52,7 +50,6 @@ public class UserDetailServiceImp implements org.springframework.security.core.u
 
     @Override
     @Transactional
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void patch(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
@@ -60,20 +57,17 @@ public class UserDetailServiceImp implements org.springframework.security.core.u
 
     @Override
     @Transactional
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void deleteUserById(long id) {
         userRepository.deleteById(id);
     }
 
     @Override
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public User getUserById(long id) {
         Optional<User> user = userRepository.findById(id);
         return user.orElse(null);
     }
 
     @Override
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
