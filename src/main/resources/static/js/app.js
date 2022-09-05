@@ -19,20 +19,20 @@ const userFetch = {
         'Content-Type': 'application/json',
         'Referer': null
     },
-    findAllUsers: async () => await fetch('api/users'),
-    findUserByUsername: async () => await fetch(`api/users/user`),
-    findOneUser: async (id) => await fetch(`api/users/${id}`),
-    addNewUser: async (user) => await fetch('api/users', {
+    findAllUsers: async () => await fetch('api/admin'),
+    findUserByUsername: async () => await fetch(`api/user`),
+    findOneUser: async (id) => await fetch(`api/admin/${id}`),
+    addNewUser: async (user) => await fetch('api/admin', {
         method: 'POST',
         headers: userFetch.headers,
         body: JSON.stringify(user)
     }),
-    updateUser: async (user) => await fetch(`api/users/`, {
+    updateUser: async (user) => await fetch(`api/admin/`, {
         method: 'PUT',
         headers: userFetch.headers,
         body: JSON.stringify(user)
     }),
-    deleteUser: async (id) => await fetch(`api/users/${id}`, {method: 'DELETE', headers: userFetch.head})
+    deleteUser: async (id) => await fetch(`api/admin/${id}`, {method: 'DELETE', headers: userFetch.head})
 }
 
 async function infoUser() {

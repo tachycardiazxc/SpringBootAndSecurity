@@ -12,13 +12,13 @@ import java.security.Principal;
 import java.util.List;
 
 @org.springframework.web.bind.annotation.RestController
-@RequestMapping("/api/users")
-public class RestController {
+@RequestMapping("/api/admin")
+public class AdminRestController {
 
     private final UserService userService;
 
     @Autowired
-    public RestController(UserService userService) {
+    public AdminRestController(UserService userService) {
         this.userService = userService;
     }
 
@@ -46,12 +46,6 @@ public class RestController {
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<User> getUser (@PathVariable("id") long id) {
         return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
-    }
-
-    @GetMapping("/user")
-    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
-    public ResponseEntity<UserDetails> getUserByUsername (Principal principal) {
-        return new ResponseEntity<>(userService.loadUserByUsername(principal.getName()), HttpStatus.OK);
     }
 
     @PutMapping

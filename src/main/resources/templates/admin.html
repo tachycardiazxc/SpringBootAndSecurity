@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Admin</title>
@@ -30,7 +29,7 @@
     <div class="row justify-content-start" style="padding-top: 15px">
 
         <div class="col-sm-2" style="padding-left: 0">
-            <a sec:authorize="hasAuthority('ROLE_ADMIN')" type="button"
+            <a type="button"
                class="btn bg-primary btn-block disabled text-white"
                style="opacity: 100; border-radius: 0; text-align: start">Admin</a>
             <a th:href="@{/user}"

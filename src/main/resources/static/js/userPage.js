@@ -4,7 +4,7 @@ $(async function () {
 })
 
 const userFetch = {
-    findUserByUsername: async () => await fetch(`api/users/user`),
+    findUserByUsername: async () => await fetch(`api/user`),
 }
 
 async function infoUser() {
