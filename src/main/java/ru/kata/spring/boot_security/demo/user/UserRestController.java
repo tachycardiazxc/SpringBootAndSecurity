@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.controller;
+package ru.kata.spring.boot_security.demo.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +14,7 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/user")
+@PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
 public class UserRestController {
 
     private final UserService userService;
@@ -24,7 +25,6 @@ public class UserRestController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public ResponseEntity<UserDetails> getUserByUsername (Principal principal) {
         return new ResponseEntity<>(userService.loadUserByUsername(principal.getName()), HttpStatus.OK);
     }
