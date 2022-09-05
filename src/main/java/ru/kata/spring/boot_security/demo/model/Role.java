@@ -16,7 +16,6 @@ public class Role implements GrantedAuthority {
     private String name;
 
     public Role() {
-        String s = "word 1, word2" + "word3, word4";
     }
 
     public Role(String name) {

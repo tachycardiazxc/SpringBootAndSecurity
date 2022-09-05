@@ -16,13 +16,7 @@ import java.util.Set;
 public class UserController {
 
     @GetMapping
-    public String userPage(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) authentication.getPrincipal();
-        Set<String> currentUserAuthorities = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
-
-        model.addAttribute("currentUserAuthorities", currentUserAuthorities);
-        model.addAttribute("currentUser", user);
+    public String userPage() {
         return "user";
     }
 

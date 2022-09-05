@@ -16,16 +16,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    private final SuccessUserHandler successUserHandler;
 
+    private final SuccessUserHandler successUserHandler;
     private final UserDetailsService userDetailsService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserDetailsService userDetailsService) {
+    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
         this.successUserHandler = successUserHandler;
         this.userDetailsService = userDetailsService;
+        this.passwordEncoder = passwordEncoder;
     }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -35,18 +36,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                 .antMatchers("/admin").hasAuthority("ROLE_ADMIN")
                 .and()
+                .csrf().disable()
                 .formLogin().successHandler(successUserHandler)
                 .and()
                 .logout().logoutUrl("/logout").logoutSuccessUrl("/");
     }
-
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
-                .passwordEncoder(getPasswordEncoder());
-    }
-
-    @Bean
-    public PasswordEncoder getPasswordEncoder() {
-        return new BCryptPasswordEncoder();
+                .passwordEncoder(passwordEncoder);
     }
 }

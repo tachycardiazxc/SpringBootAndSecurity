@@ -17,22 +17,7 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <strong class="text-white" th:text="${currentUser.getEmail()}">Email</strong>
-
-
-    <div class="collapse navbar-collapse" id="navbarText">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link disabled text-white" th:text="'with roles: ' + ${currentUser.getRoles()}">Roles</a>
-            </li>
-        </ul>
-        <form class="form-inline" th:action="@{/logout}" method="post">
-            <a th:href="@{/}" class="nav-text nav-link text-white-50 active"
-               onclick="this.closest('form').submit();return false;" role="button">Logout</a>
-            <input type="submit" name="target" hidden/>
-        </form>
-    </div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="info">
 </nav>
 
 <div class="container-fluid">
@@ -40,11 +25,10 @@
     <div class="row justify-content-start" style="padding-top: 15px">
 
         <div class="col-sm-2" style="padding-left: 0">
-            <a th:href="@{/admin}" th:if="${currentUserAuthorities.contains('ROLE_ADMIN')}" type="button"
+            <a th:href="@{/admin}" sec:authorize="hasAuthority('ROLE_ADMIN')" type="button"
                class="btn bg-light btn-block text-primary"
                style="opacity: 100; border-radius: 0; text-align: start">Admin</a>
-            <a th:if="${currentUserAuthorities.contains('ROLE_USER') || currentUserAuthorities.contains('ROLE_ADMIN')}"
-               type="button" class="btn bg-primary disabled btn-block text-white"
+            <a type="button" class="btn bg-primary disabled btn-block text-white"
                style="margin-top: 0; opacity: 100; text-align: start">User</a>
         </div>
 
@@ -68,12 +52,11 @@
                             </div>
 
                             <div class="row justify-content-start" style="padding-top: 5px">
-                                <table class="table table-hover table-striped">
+                                <table class="table table-hover table-striped" id="userTable">
                                     <thead>
                                     <tr>
                                         <th scope="col">Id</th>
                                         <th scope="col">Username</th>
-                                        <th scope="col">Password</th>
                                         <th scope="col">First Name</th>
                                         <th scope="col">Last Name</th>
                                         <th scope="col">Email</th>
@@ -81,21 +64,6 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td th:text="${currentUser.getId()}">Id</td>
-                                        <td th:text="${currentUser.getUsername()}">Username</td>
-                                        <td th:if="${currentUser.getPassword().length() > 10}"
-                                            th:text="${currentUser.getPassword().subSequence(0, 10) + '...'}">
-                                            Password
-                                        </td>
-                                        <td th:if="${currentUser.getPassword().length() <= 10}" th:text="user.getPassword()">
-                                            Password
-                                        </td>
-                                        <td th:text="${currentUser.getFirstName()}">FirstName</td>
-                                        <td th:text="${currentUser.getLastName()}">LastName</td>
-                                        <td th:text="${currentUser.getEmail()}">Email</td>
-                                        <td th:text="${currentUser.getRoles()}">Role</td>
-                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -108,7 +76,7 @@
 
 </div>
 
-</div>
+<script type="text/javascript" th:src="@{js/userPage.js}" src="../static/js/userPage.js"></script>
 
 </body>
 </html>
