@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.user;
+package ru.kata.spring.boot_security.demo.controller.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
